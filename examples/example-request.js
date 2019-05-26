@@ -39,7 +39,7 @@ const pingRequest = https.request(
   {
     host: host,
     port: 443,
-    path: "/dev/ping",
+    path: "/dev/hello/t2",
     method: "GET",
     headers: {
       "User": profile

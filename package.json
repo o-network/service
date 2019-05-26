@@ -2,9 +2,7 @@
   "name": "@opennetwork/service",
   "version": "1.0.0",
   "description": "Open Network Service",
-  "scripts": {
-
-  },
+  "scripts": {},
   "dependencies": {
     "@opennetwork/http-rdf": "^2.2.0",
     "@opennetwork/http-representation": "^2.0.25",
@@ -16,13 +14,14 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",
-    "@types/node": "^10",
+    "@types/node": "^12.0.2",
     "@types/node-fetch": "^2.3.4",
     "@types/node-rsa": "^1.0.0",
     "copy-webpack-plugin": "^5.0.3",
     "jsonld": "^1.6.2",
     "jsonld-request": "^0.2.0",
     "pkginfo": "^0.4.1",
+    "serverless-domain-manager": "^3.2.2",
     "serverless-webpack": "^5.1.1",
     "source-map-support": "^0.5.6",
     "ts-loader": "^6.0.1",

@@ -9,11 +9,12 @@
     {
       "@id": "https://me.examples.open-network.dev/profile.jsonld",
       "@type": "http://xmlns.com/foaf/0.1/PersonalProfileDocument",
-      "foaf:primaryTopic": [
-        {
-          "@id": "https://me.examples.open-network.dev/profile.jsonld#me"
-        }
-      ]
+      "foaf:primaryTopic": {
+        "@id": "https://me.examples.open-network.dev/profile.jsonld#me"
+      },
+      "http://xmlns.com/foaf/0.1/maker": {
+        "@id": "https://me.examples.open-network.dev/profile.jsonld#me"
+      }
     },
     {
       "@id": "https://me.examples.open-network.dev/profile.jsonld#me",
@@ -26,7 +27,25 @@
         {
           "@id": "https://me.examples.open-network.dev/profile.jsonld#key1"
         }
-      ]
+      ],
+      "http://www.w3.org/ns/ldp#inbox": {
+        "@id": "https://alpha.service.open-network.abstraction.name/accounts/open-network-example/inbox/"
+      },
+      "http://www.w3.org/ns/pim/space#storage": {
+        "@id": "https://alpha.service.open-network.abstraction.name/accounts/open-network-example/"
+      },
+      "http://www.w3.org/ns/pim/space#account": {
+        "@id": "https://alpha.service.open-network.abstraction.name/accounts/open-network-example/"
+      },
+      "http://www.w3.org/ns/solid/terms#privateTypeIndex": {
+        "@id": "https://alpha.service.open-network.abstraction.name/accounts/open-network-example/settings/privateTypeIndex.ttl"
+      },
+      "http://www.w3.org/ns/solid/terms#publicTypeIndex": {
+        "@id": "https://alpha.service.open-network.abstraction.name/accounts/open-network-example/profile/publicTypeIndex.ttl"
+      },
+      "http://www.w3.org/ns/solid/terms#timeline": {
+        "@id": "https://alpha.service.open-network.abstraction.name/accounts/open-network-example/pictures/"
+      }
     },
     {
       "@id": "https://me.examples.open-network.dev/profile.jsonld#key1",

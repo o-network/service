@@ -3,12 +3,39 @@ service:
 
 plugins:
   - serverless-webpack
+  - serverless-domain-manager
 
 provider:
   name: aws
   runtime: nodejs10.x
+  environment:
+    CURRENT_HOST: ${self:custom.customDomain.domainName}
+    AWS_S3_STORAGE_BUCKET:
+      Ref: StorageBucket
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource:
+        - "arn:aws:s3:::${self:provider.stage}-${self:provider.region}-${self:service.name}-storage"
+        - "arn:aws:s3:::${self:provider.stage}-${self:provider.region}-${self:service.name}-storage/*"
 
 custom:
+  env: ${self:custom.${self:provider.stage}}
+  dev:
+    baseDomainName: open-network.abstraction.name
+    domainName: alpha.service.${self:custom.env.baseDomainName}
+    createRoute53Record: true
+    certificateName: "*.service.${self:custom.env.baseDomainName}"
+  prod:
+    baseDomainName: open-network.abstraction.name
+    domainName: service.${self:custom.env.baseDomainName}
+    createRoute53Record: true
+    certificateName: "*.${self:custom.env.baseDomainName}"
+  customDomain:
+    domainName: ${self:custom.env.domainName}
+    createRoute53Record: ${self:custom.env.createRoute53Record}
+    certificateName: ${self:custom.env.certificateName}
   authorise:
     name: authorise
     resultTtlInSeconds: 0
@@ -27,3 +54,22 @@ functions:
           cors:
             origin: "*"
           authorizer: ${self:custom.authorise}
+  primary:
+    handler: src/serverless/lambda/primary.handler
+    events:
+      - http:
+          method: any
+          path: /{proxy+}
+          cors:
+            origin: "*"
+          authorizer: ${self:custom.authorise}
+
+resources:
+  Resources:
+    StorageBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: :${self:provider.stage}-${self:provider.region}-${self:service.name}-storage
+
+
+

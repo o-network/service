@@ -6,7 +6,7 @@ export async function authoriseSignature(request: IncomingMessageLike, getPublic
   const parsedSignature = parseRequest(request, options);
   const publicKey = await getPublicKey(parsedSignature.keyId);
   if (!publicKey) {
-    return false;
+    return undefined;
   }
-  return verifySignature(parsedSignature, publicKey)
+  return verifySignature(parsedSignature, publicKey);
 }

@@ -1,12 +1,16 @@
 import {
+  AuthResponseContext,
   CustomAuthorizerResult,
-  APIGatewayProxyResult, APIGatewayEventRequestContext
+  APIGatewayProxyResult,
+  APIGatewayEventRequestContext
 } from "aws-lambda";
 import { generatePolicy } from "./generate-policy"
 import { authoriseSignature } from "../../authentication/authorise-signature";
 import {Headers, IncomingMessageLike, ParseRequestOptions} from "http-signature";
 import fetch from "../../fetch";
-import createPublicKeyGetter from "../../authentication/get-public-key";
+import { parseProfileGraph, getProfileDocument, getStorageLocationForProfile } from "../../authentication/get-profile";
+import { getPublicKeyFromProfile } from "../../authentication/get-public-key";
+import {IndexedFormula} from "../../types/rdflib";
 
 type Event = {
   requestContext?: APIGatewayEventRequestContext & {
@@ -49,6 +53,14 @@ export async function initiationHandler(event: Event): Promise<APIGatewayProxyRe
   }
 }
 
+async function getContextFromGraph(profileUri: string, profileDocument: string, profileGraph: IndexedFormula): Promise<AuthResponseContext> {
+  return {
+    agent: profileUri,
+    document: profileDocument,
+    storage: await getStorageLocationForProfile(profileUri, profileGraph)
+  };
+}
+
 async function signatureHandler(event: Event): Promise<CustomAuthorizerResult> {
   if (!event.requestContext) {
     throw new Error("Unable to process non request");
@@ -64,7 +76,8 @@ async function signatureHandler(event: Event): Promise<CustomAuthorizerResult> {
     method: event.requestContext.httpMethod,
     httpVersion: event.requestContext.protocol.split("/")[1]
   };
-  const getPublicKey = createPublicKeyGetter(fetch, profileUri);
+  const profileDocument = await getProfileDocument(fetch, profileUri);
+  const profileGraph = await parseProfileGraph(profileDocument, profileUri);
   const options: ParseRequestOptions = {
     headers: [
       "user" // As its what we will use for the principal identifier & to fetch the certificate
@@ -76,12 +89,11 @@ async function signatureHandler(event: Event): Promise<CustomAuthorizerResult> {
       "rsa-sha512"
     ]
   };
-  if (!await authoriseSignature(request, getPublicKey, options)) {
+  if (!await authoriseSignature(request, identifier => getPublicKeyFromProfile(profileGraph, identifier), options)) {
     throw new Error("Unauthorised");
   }
-  return generatePolicy(profileUri, "Allow", event.methodArn, {
-    agent: profileUri
-  });
+  const resultContext = await getContextFromGraph(profileUri, profileDocument, profileGraph);
+  return generatePolicy(profileUri, "Allow", event.methodArn, resultContext);
 }
 
 export async function handler(event: Event): Promise<CustomAuthorizerResult> {

@@ -1,5 +1,5 @@
 import { Request, Response, Headers, asBuffer } from "@opennetwork/http-representation";
-import fetch, { BodyInit, HeadersInit } from "node-fetch";
+import fetch, { HeadersInit } from "node-fetch";
 
 function getAll(headers: Headers, key: string): string {
   if (headers.getAll) {
@@ -17,7 +17,7 @@ function getHeaders(headers: Headers): HeadersInit {
 
 export default async function(request: Request): Promise<Response> {
   const response = await fetch(request.url, {
-    body: request.body as BodyInit,
+    body: await asBuffer(request),
     method: request.method,
     headers: getHeaders(request.headers)
   });
