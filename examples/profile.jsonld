@@ -1,0 +1,42 @@
+{
+  "@context": {
+    "cert": "http://www.w3.org/ns/auth/cert#",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "https://me.examples.open-network.dev/profile.jsonld",
+      "@type": "http://xmlns.com/foaf/0.1/PersonalProfileDocument",
+      "foaf:primaryTopic": [
+        {
+          "@id": "https://me.examples.open-network.dev/profile.jsonld#me"
+        }
+      ]
+    },
+    {
+      "@id": "https://me.examples.open-network.dev/profile.jsonld#me",
+      "@type": [
+        "http://schema.org/Person",
+        "http://xmlns.com/foaf/0.1/Person"
+      ],
+      "foaf:name": "Open Network",
+      "cert:key": [
+        {
+          "@id": "https://me.examples.open-network.dev/profile.jsonld#key1"
+        }
+      ]
+    },
+    {
+      "@id": "https://me.examples.open-network.dev/profile.jsonld#key1",
+      "@type": "cert:RSAPublicKey",
+      "cert:exponent": 65537,
+      "cert:modulus": {
+        "@type": "xsd:hexBinary",
+        "@value": "00c2144346c37df21a2872f76a438d94219740b7eab3c98fe0af7d20bcfaadbc871035eb5405354775df0b824d472ad10776aac05eff6845c9cd83089260d21d4befcfba67850c47b10e7297dd504f477f79bf86cf85511e39b8125e0cad474851c3f1b1ca0fa92ff053c67c94e8b5cfb6c63270a188bed61aa9d5f21e91ac6cc9"
+      },
+      "rdf:label": "Example public certificate 1"
+    }
+  ]
+}

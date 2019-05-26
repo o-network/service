@@ -1,0 +1,38 @@
+{
+  "name": "@opennetwork/service",
+  "version": "1.0.0",
+  "description": "Open Network Service",
+  "scripts": {
+
+  },
+  "dependencies": {
+    "@opennetwork/http-rdf": "^2.2.0",
+    "@opennetwork/http-representation": "^2.0.25",
+    "@opennetwork/http-store": "^6.1.0",
+    "http-signature": "^1.2.0",
+    "node-fetch": "^2.6.0",
+    "node-rsa": "^1.0.5",
+    "rdflib": "^0.20.1"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.17",
+    "@types/node": "^10",
+    "@types/node-fetch": "^2.3.4",
+    "@types/node-rsa": "^1.0.0",
+    "copy-webpack-plugin": "^5.0.3",
+    "jsonld": "^1.6.2",
+    "jsonld-request": "^0.2.0",
+    "pkginfo": "^0.4.1",
+    "serverless-webpack": "^5.1.1",
+    "source-map-support": "^0.5.6",
+    "ts-loader": "^6.0.1",
+    "typescript": "^3.4.5",
+    "webpack": "^4.5.0",
+    "webpack-cli": "^3.3.2"
+  },
+  "author": "Fabian Cook <hello@fabiancook.dev>",
+  "license": "MIT",
+  "resolutions": {
+    "jsonld": "1.6.2"
+  }
+}

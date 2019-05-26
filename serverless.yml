@@ -1,0 +1,29 @@
+service:
+  name: open-network-service
+
+plugins:
+  - serverless-webpack
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+
+custom:
+  authorise:
+    name: authorise
+    resultTtlInSeconds: 0
+    type: request
+    identitySource: ""
+
+functions:
+  authorise:
+    handler: src/serverless/lambda/authorise.handler
+  ping:
+    handler: src/serverless/lambda/ping.handler
+    events:
+      - http:
+          method: get
+          path: ping
+          cors:
+            origin: "*"
+          authorizer: ${self:custom.authorise}
